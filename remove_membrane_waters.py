@@ -12,17 +12,17 @@ parser = argparse.ArgumentParser(
             description='',
             epilog='')
 
-parser.add_argument('-f', '--stucture_file', type=str, help='gro file containing the structure of the solvated system with waters in the membrane')
+parser.add_argument('-f', '--structure_file', type=str, help='structure file containing the structure of the solvated system with waters in the membrane')
 parser.add_argument('-g', '--headgroup_selection', type=str, help='selection string for the headgroup atoms of the membrane (e.g. "resname DPPC and name PO4")')
 
 args = parser.parse_args()
 
 
-u = mda.Universe(args['stucture_file'])
+u = mda.Universe(args.structure_file)
 
 
 #   Pick *one* representative bead/atom per lipid to build the graph.
-headgroups = u.select_atoms(f"{args['headgroup_selection']}")
+headgroups = u.select_atoms(f"{args.headgroup_selection}")
 
 #   Build the connectivity graph and split it into connected components
 lf = LeafletFinder(u, headgroups, cutoff=25.0, pbc=True)
